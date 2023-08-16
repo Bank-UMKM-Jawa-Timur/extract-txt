@@ -1,8 +1,8 @@
 import os, json, time, csv
 from flask import *
 from werkzeug.utils import secure_filename
-import models.a0cy_model as my_model
-import models.lloan_model as loan_model
+from models.a0cy_model import A0CYModel
+from models.lloan_model import LLOANModel
 from ftplib import FTP
 
 # File requirement
@@ -51,11 +51,11 @@ def connect_ftp():
     
 def split_data(data):
     # Set dictionary
-    dict1 = my_model.A0CYModel("CYSTAT", 1, 1, 1, "Status Record")
-    dict2 = my_model.A0CYModel("CYCODE", 2, 4, 3, "Currency Code")
-    dict3 = my_model.A0CYModel("CYNAME", 5, 34, 30, "Currency Name")
-    dict4 = my_model.A0CYModel("CYDTLC", 35, 42, 8, "Tanggal Diubah")
-    dict5 = my_model.A0CYModel("CYDECI", 43, 43, 1, "Decimal Point")
+    dict1 = A0CYModel("CYSTAT", 1, 1, 1, "Status Record")
+    dict2 = A0CYModel("CYCODE", 2, 4, 3, "Currency Code")
+    dict3 = A0CYModel("CYNAME", 5, 34, 30, "Currency Name")
+    dict4 = A0CYModel("CYDTLC", 35, 42, 8, "Tanggal Diubah")
+    dict5 = A0CYModel("CYDECI", 43, 43, 1, "Decimal Point")
     arr_code = ['CYSTAT', 'CYCODE', 'CYNAME', 'CYDTLC', 'CYDECI']
     arr_desc = ['Status Record', 'Currency Code', 'Currency Name', 'Tanggal Diubah', 'Decimal Point']
 
@@ -87,11 +87,11 @@ def split_data(data):
 
 def split_data_lloan(data):
     # Set dictionary
-    dict1 = loan_model.LLOANModel("L0STAT", 1, 1, 1, "Status Record")
-    dict2 = loan_model.LLOANModel("L0STAD", 2, 2, 1, "Status Data")
-    dict3 = loan_model.LLOANModel("L0BRCA", 3, 4, 2, "Wilayah")
-    dict4 = loan_model.LLOANModel("L0BRCD", 5, 7, 3, "Branch")
-    dict5 = loan_model.LLOANModel("L0CSNO", 8, 15, 8, "Customer code")
+    dict1 = LLOANModel("L0STAT", 1, 1, 1, "Status Record")
+    dict2 = LLOANModel("L0STAD", 2, 2, 1, "Status Data")
+    dict3 = LLOANModel("L0BRCA", 3, 4, 2, "Wilayah")
+    dict4 = LLOANModel("L0BRCD", 5, 7, 3, "Branch")
+    dict5 = LLOANModel("L0CSNO", 8, 15, 8, "Customer code")
     arr_code = ['L0STAT', 'L0STAD', 'L0BRCA', 'L0BRCD', 'L0CSNO']
     arr_desc = ['Status Record', 'Status Data', 'Wilayah', 'Branch', 'Customer code']
 
