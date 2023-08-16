@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 # from models.a0cy_model import A0CYModel
 # from models.lloan_model import LLOANModel
 from ftplib import FTP
+import requests
 
 # File requirement
 UPLOAD_FOLDER = 'file_uploads'
@@ -15,12 +16,19 @@ FTP_USER = "arsyad"
 FTP_PASSWORD = "Petromax123."
 FTP_FILES_DIR = "/ftp/upload"
 
+# DWH Host
+DWH_HOST = "http://127.0.0.1:8000"
+DWH_TOKEN = "$2y$10$uK7wv2xbmgOFAWOA./7nn.RMkuDfg4FKy64ad4h0AVqKxEpt0Co2u"
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['FTP_HOST'] = FTP_HOST
 app.config['FTP_USER'] = FTP_USER
 app.config['FTP_PASSWORD'] = FTP_PASSWORD
 app.config['FTP_FILES_DIR'] = FTP_FILES_DIR
+app.config['DWH_HOST'] = DWH_HOST
+app.config['DWH_TOKEN'] = DWH_TOKEN
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -121,6 +129,15 @@ def connect_ftp():
 #         result.append(objects)
 #     return result
 
+def get_dictionary(filename):
+    url = app.config['DWH_HOST'],'/api/v1/dictionary'
+    params = {'filename': filename}
+    headers =  {"mid-client-key": app.config['DWH_TOKEN']}
+
+    response = requests.get(url,params=params, headers=headers)
+    
+    return response.json()
+
 @app.route('/', methods=['POST'])
 def post_file():
     # check if the post request has the file part
@@ -160,6 +177,16 @@ def post_file():
             'data': filename,
         }
         return jsonify(response), 200
+
+@app.route('/tes', methods=['GET'])
+def tes():
+    # res = get_dictionary("A0CY")
+    url = "".join([app.config['DWH_HOST'],"/api/v1/dictionary"])
+    params = {'filename': 'A0CY'}
+    headers =  {"mid-client-key": app.config['DWH_TOKEN']}
+
+    response = requests.get(url,params=params, headers=headers)
+    return jsonify(response.json()), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
