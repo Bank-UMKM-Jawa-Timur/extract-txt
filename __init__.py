@@ -1,8 +1,8 @@
 import os, json, time, csv
 from flask import *
 from werkzeug.utils import secure_filename
-from models.a0cy_model import A0CYModel
-from models.lloan_model import LLOANModel
+# from models.a0cy_model import A0CYModel
+# from models.lloan_model import LLOANModel
 from ftplib import FTP
 
 # File requirement
@@ -49,77 +49,77 @@ def connect_ftp():
         print('--------End file values--------')
     return file
     
-def split_data(data):
-    # Set dictionary
-    dict1 = A0CYModel("CYSTAT", 1, 1, 1, "Status Record")
-    dict2 = A0CYModel("CYCODE", 2, 4, 3, "Currency Code")
-    dict3 = A0CYModel("CYNAME", 5, 34, 30, "Currency Name")
-    dict4 = A0CYModel("CYDTLC", 35, 42, 8, "Tanggal Diubah")
-    dict5 = A0CYModel("CYDECI", 43, 43, 1, "Decimal Point")
-    arr_code = ['CYSTAT', 'CYCODE', 'CYNAME', 'CYDTLC', 'CYDECI']
-    arr_desc = ['Status Record', 'Currency Code', 'Currency Name', 'Tanggal Diubah', 'Decimal Point']
+# def split_data(data):
+#     # Set dictionary
+#     dict1 = A0CYModel("CYSTAT", 1, 1, 1, "Status Record")
+#     dict2 = A0CYModel("CYCODE", 2, 4, 3, "Currency Code")
+#     dict3 = A0CYModel("CYNAME", 5, 34, 30, "Currency Name")
+#     dict4 = A0CYModel("CYDTLC", 35, 42, 8, "Tanggal Diubah")
+#     dict5 = A0CYModel("CYDECI", 43, 43, 1, "Decimal Point")
+#     arr_code = ['CYSTAT', 'CYCODE', 'CYNAME', 'CYDTLC', 'CYDECI']
+#     arr_desc = ['Status Record', 'Currency Code', 'Currency Name', 'Tanggal Diubah', 'Decimal Point']
 
-    # Convert object to json serialized
-    # json_str1 = json.dumps(dict1.__dict__)
-    # json_str2 = json.dumps(dict2.__dict__)
-    # json_str3 = json.dumps(dict3.__dict__)
-    # json_str4 = json.dumps(dict4.__dict__)
-    # json_str5 = json.dumps(dict5.__dict__)
+#     # Convert object to json serialized
+#     # json_str1 = json.dumps(dict1.__dict__)
+#     # json_str2 = json.dumps(dict2.__dict__)
+#     # json_str3 = json.dumps(dict3.__dict__)
+#     # json_str4 = json.dumps(dict4.__dict__)
+#     # json_str5 = json.dumps(dict5.__dict__)
 
-    all_dict = []
-    all_dict.append(dict1)
-    all_dict.append(dict2)
-    all_dict.append(dict3)
-    all_dict.append(dict4)
-    all_dict.append(dict5)
+#     all_dict = []
+#     all_dict.append(dict1)
+#     all_dict.append(dict2)
+#     all_dict.append(dict3)
+#     all_dict.append(dict4)
+#     all_dict.append(dict5)
     
-    # Split data
-    result = []
-    for i in range(len(data)):
-        val = data[i].strip()
-        objects = {}
-        for j in range(len(arr_code)):
-            value = val[(all_dict[j].froms - 1):all_dict[j].to]
-            value = value.lstrip().rstrip()
-            objects[arr_code[j]] = value
-        result.append(objects)
-    return result
+#     # Split data
+#     result = []
+#     for i in range(len(data)):
+#         val = data[i].strip()
+#         objects = {}
+#         for j in range(len(arr_code)):
+#             value = val[(all_dict[j].froms - 1):all_dict[j].to]
+#             value = value.lstrip().rstrip()
+#             objects[arr_code[j]] = value
+#         result.append(objects)
+#     return result
 
-def split_data_lloan(data):
-    # Set dictionary
-    dict1 = LLOANModel("L0STAT", 1, 1, 1, "Status Record")
-    dict2 = LLOANModel("L0STAD", 2, 2, 1, "Status Data")
-    dict3 = LLOANModel("L0BRCA", 3, 4, 2, "Wilayah")
-    dict4 = LLOANModel("L0BRCD", 5, 7, 3, "Branch")
-    dict5 = LLOANModel("L0CSNO", 8, 15, 8, "Customer code")
-    arr_code = ['L0STAT', 'L0STAD', 'L0BRCA', 'L0BRCD', 'L0CSNO']
-    arr_desc = ['Status Record', 'Status Data', 'Wilayah', 'Branch', 'Customer code']
+# def split_data_lloan(data):
+#     # Set dictionary
+#     dict1 = LLOANModel("L0STAT", 1, 1, 1, "Status Record")
+#     dict2 = LLOANModel("L0STAD", 2, 2, 1, "Status Data")
+#     dict3 = LLOANModel("L0BRCA", 3, 4, 2, "Wilayah")
+#     dict4 = LLOANModel("L0BRCD", 5, 7, 3, "Branch")
+#     dict5 = LLOANModel("L0CSNO", 8, 15, 8, "Customer code")
+#     arr_code = ['L0STAT', 'L0STAD', 'L0BRCA', 'L0BRCD', 'L0CSNO']
+#     arr_desc = ['Status Record', 'Status Data', 'Wilayah', 'Branch', 'Customer code']
 
-    # Convert object to json serialized
-    # json_str1 = json.dumps(dict1.__dict__)
-    # json_str2 = json.dumps(dict2.__dict__)
-    # json_str3 = json.dumps(dict3.__dict__)
-    # json_str4 = json.dumps(dict4.__dict__)
-    # json_str5 = json.dumps(dict5.__dict__)
+#     # Convert object to json serialized
+#     # json_str1 = json.dumps(dict1.__dict__)
+#     # json_str2 = json.dumps(dict2.__dict__)
+#     # json_str3 = json.dumps(dict3.__dict__)
+#     # json_str4 = json.dumps(dict4.__dict__)
+#     # json_str5 = json.dumps(dict5.__dict__)
 
-    all_dict = []
-    all_dict.append(dict1)
-    all_dict.append(dict2)
-    all_dict.append(dict3)
-    all_dict.append(dict4)
-    all_dict.append(dict5)
+#     all_dict = []
+#     all_dict.append(dict1)
+#     all_dict.append(dict2)
+#     all_dict.append(dict3)
+#     all_dict.append(dict4)
+#     all_dict.append(dict5)
     
-    # Split data
-    result = []
-    for i in range(len(data)):
-        val = data[i].strip()
-        objects = {}
-        for j in range(len(arr_code)):
-            value = val[(all_dict[j].froms - 1):all_dict[j].to]
-            value = value.lstrip().rstrip()
-            objects[arr_code[j]] = value
-        result.append(objects)
-    return result
+#     # Split data
+#     result = []
+#     for i in range(len(data)):
+#         val = data[i].strip()
+#         objects = {}
+#         for j in range(len(arr_code)):
+#             value = val[(all_dict[j].froms - 1):all_dict[j].to]
+#             value = value.lstrip().rstrip()
+#             objects[arr_code[j]] = value
+#         result.append(objects)
+#     return result
 
 @app.route('/', methods=['POST'])
 def post_file():
@@ -140,8 +140,8 @@ def post_file():
         }
         return jsonify(response), 400
     if file and allowed_file(file.filename):
-        # # Get uploaded file
-        # filename = secure_filename(file.filename)
+        # Get uploaded file
+        filename = secure_filename(file.filename)
         # path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         # file.save(path)
 
@@ -149,11 +149,15 @@ def post_file():
         # text.remove("")
         # result = text
         # final_result = split_data(result)
-        ftp = connect_ftp()
+
+        # Connect ftp
+        # ftp = connect_ftp()
+
+
         response = {
             'status': 'success',
             'message': 'Successfully upload file.',
-            'data': ftp,
+            'data': filename,
         }
         return jsonify(response), 200
 
