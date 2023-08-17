@@ -106,7 +106,10 @@ def post_file():
 
 @app.route('/tes', methods=['GET'])
 def tes():
-    res = get_dictionary("A0CY")
+    req = request.args
+
+    filename = req['filename']
+    res = get_dictionary(filename)
 
     return jsonify(res), 200
 
