@@ -87,9 +87,6 @@ def post_file():
 
         res = get_dictionary(filename_split)
         items = res['data']['item']
-        # for i in range(len(items)):
-        for x in items:
-            print(x['field'])
 
         text = read_file(path=path)
         text.remove("")
@@ -114,4 +111,4 @@ def tes():
     return jsonify(res), 200
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0')
