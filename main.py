@@ -69,7 +69,7 @@ def split_data_with_dictionary(data, dictionary):
     
     return result
 
-def save_json(data, filename):
+def save_json(data, filename, total_all_data, page):
     print("save response to json file")
     path = f"json/{filename}"
     # Check whether the specified path exists or not
@@ -83,31 +83,31 @@ def save_json(data, filename):
     limit = 1000 # limit per page
     total_data = data['total']
     total_page = int(total_data / limit)
-    page = 1
 
-    if (total_data > limit):
-        start_index = 0
-        end_index = limit
-        for page in range(1, total_data):
-            save_file = open(f"{path}/{filename}_{page}.json", "w")
-            start_index = limit * page - limit
-            if (page > 1):
-                end_index = limit * page
-            value = {
-                'total': total_data,
-                'total_per_page': len(data['data'][start_index:end_index]),
-                'data': data['data'][start_index:end_index]
-            }
-            my_json.dump(value, save_file, indent = 6)
-            save_file.close()
-    else:
-        save_file = open(f"{path}/{filename}_{page}.json", "w")
-        value = {
-            'total': total_data,
-            'data': data['data']
-        }
-        my_json.dump(data, save_file, indent = 6)
-        save_file.close()
+    # if (total_data > limit):
+    #     start_index = 0
+    #     end_index = limit
+    #     for page in range(1, total_data):
+    #         save_file = open(f"{path}/{filename}_{page}.json", "w")
+    #         start_index = limit * page - limit
+    #         if (page > 1):
+    #             end_index = limit * page
+    #         value = {
+    #             'total': total_data,
+    #             'total_per_page': len(data['data'][start_index:end_index]),
+    #             'data': data['data'][start_index:end_index]
+    #         }
+    #         my_json.dump(value, save_file, indent = 6)
+    #         save_file.close()
+    # else:
+    save_file = open(f"{path}/{filename}_{page}.json", "w")
+    value = {
+        'total': total_data,
+        'total_all_data': total_all_data,
+        'data': data['data']
+    }
+    my_json.dump(value, save_file, indent = 6)
+    save_file.close()
     
     print("file saved")
 
@@ -116,20 +116,24 @@ def save_json(data, filename):
 def post_file():
     if request.method == 'POST':
         try:
+            # Request body
+            page = request.json['page']
             filename = request.json['file']
+            total_all_data = request.json['total']
             items = request.json['dictionary']
-            text = read_file(url=request.json['file_url'])
-            # text.remove("")
+            text = request.json['file_json']
+
             result = text
             final_result = split_data_with_dictionary(result, items)
 
             final_result = {
+                'total_all_data': total_all_data,
                 'total': len(final_result),
                 'data': final_result
             }
 
             # Save json file
-            save_json(final_result, filename)
+            save_json(final_result, filename, total_all_data, page)
 
             response = {
                 'status': 'success',
@@ -144,7 +148,7 @@ def post_file():
             response = {
                 'status': 'failed',
                 'message': 'Failed to upload file.',
-                'detail': e
+                'detail': str(e)
             }
 
             return jsonify(response), 500
