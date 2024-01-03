@@ -152,7 +152,36 @@ def post_file():
             }
 
             return jsonify(response), 500
+        
+@app.route('/pembayaran', methods=['POST'])
+def post_file_pembayaran():
+    if request.method == 'POST':
+        try:
+            # Request body
+            items = request.json['dictionary']
+            text = request.json['file_json']
 
+            result = text
+            final_result = split_data_with_dictionary(result, items)
+            
+            #response
+            response = {
+                'status': 'success',
+                'message': 'Successfully upload file.',
+                'data': final_result    
+            }
+
+            return jsonify(response), 200
+        except Exception as e:
+            print('error')
+            print(e)
+            response = {
+                'status': 'failed',
+                'message': 'Failed to upload file.',
+                'detail': str(e)
+            }
+
+            return jsonify(response), 500
 @app.route('/json', methods=['GET'])
 def json():
     req = request.args
